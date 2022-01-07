@@ -39,14 +39,13 @@ export default function QuickPage() {
     const body = { numberMC, expectedMC, currentCAP, targetCAP }
     const result = calculateQuickResult(body)
     // if result is null, then it is not possible to achieve target cap
-    console.log(result)
     setResult(result.toFixed(2).toString())
     _showResult(true)
   }
 
   return (
     <Container>
-      <h1>
+      <h1 className='my-4'>
         Input the following fields and we will compute the grade to obtain for the remaining modules to achieve your target CAP
       </h1>
       <Container>
@@ -66,6 +65,7 @@ export default function QuickPage() {
             <input type="number" min="0" max="5" step="0.01" className="form-control mt-2" name="currentCAP"
               placeholder="(Input a number, eg. 4.12)" onChange={e => _onChange(e)} value={currentCAP} required />
           </Form.Group>
+          
           <Form.Group className="m-4 h4">
             <Form.Label>Target CAP:</Form.Label>
             <input type="number" min="0" max="5" step="0.01" className="form-control mt-2" name="targetCAP"
@@ -75,9 +75,29 @@ export default function QuickPage() {
             <button type="submit" className="btn btn-primary m-4">Submit</button>
           </div>
         </Form>
-        {resultVisibility && Object.values(inputs).every((str) => _isEmpty(str) === false) && (
-          <p className='my-5'>result is {result}</p>
-        )}
+        <Container className='text-center'>
+          <h1>
+            Results
+          </h1>
+          {resultVisibility && Object.values(inputs).every((str) => _isEmpty(str) === false) && (
+            (result !== "-1.00") ? (
+              <div>
+                <h4 className='mt-4'>
+                  To achieve your target CAP, the grade <br />
+                  point to obtain for each remaining <br />
+                  module is
+                </h4>
+                <br />
+                <h1 className='mb-5'><b>{result}</b></h1>
+              </div>
+            ) : (
+              <h4 className='mt-4 mb-5'>
+                Please readjust your target CAP as <br />
+                it cannot be achieved.
+              </h4>
+            )
+          )}
+        </Container>
         <RandomQuote />
       </Container>
     </Container>
