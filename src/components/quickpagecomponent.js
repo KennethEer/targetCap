@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { calculateQuickResult } from '../utils/Math';
+import RandomQuote from './RandomQuote';
 
 
 export default function QuickPage() {
@@ -73,6 +74,7 @@ export default function QuickPage() {
         {resultVisibility && Object.values(inputs).every((str) => _isEmpty(str) === false) && (
           <p className='my-5'>put results here</p>
         )}
+        <RandomQuote />
       </Container>
     </Container>
   )
