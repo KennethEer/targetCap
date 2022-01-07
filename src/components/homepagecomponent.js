@@ -15,9 +15,9 @@ export default class homepage extends Component {
                     to achieve your dream CAP and set your target grades
                 </h4>
                 <p className="subsubheading"></p>
-                <a href="/quick" class="btn btn-info" role="button" style={{marginRight: '40px'}}>Quick</a>
+                <a href="/quick" className="btn btn-info" role="button" style={{marginRight: '40px'}}>Quick</a>
 
-                <a href="/advanced" class="btn btn-info" role="button">Advanced</a>
+                <a href="/advanced" className="btn btn-info" role="button">Advanced</a>
                 </Container>
             </div>
         )
