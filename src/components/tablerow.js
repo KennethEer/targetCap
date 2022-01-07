@@ -11,7 +11,7 @@ export default function Tablerow(props) {
                     onChange={e => {e.preventDefault(); props.onChange(e.target.name, e.target.value)}}/>
                 </td>
                 <td>
-                <input type="number" min="0" max="15" name="numberofMC" style={{width: "150px"}} value={props.specificMc}
+                <input type="number" min="0" max="15" name="numberofMC" style={{width: "100px"}} value={props.specificMc}
                     placeholder="(Select a number)" onChange={e => {props.onChange(e.target.name, e.target.value)}}/>
                 </td>
                 <td>

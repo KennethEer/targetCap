@@ -101,22 +101,6 @@ export default function Advancedpage() {
             </h6>
             <br></br>
 
-            <div id="ele">
-                    {
-                    (<div className="text-center">
-                        {resultVisibility ? <>
-                            <h1 className="text-center">Results:</h1>
-                        <h4>To achieve your target CAP, the minimum<br></br> 
-                                            grade point to obtain for each remaining<br></br>
-                                            graded module is <br></br></h4>
-                                            <h1> {resultcap}</h1>
-                                            <ResultTable allhonour={allresultcap} />
-                                            <h4><RandomQuote /></h4></>
-                                            : <p></p>}
-                         </div>)
-                    }
-                </div>
-
             <Row>
                 <Col>
                 <h5>Year 1 Sem 1</h5>
@@ -183,7 +167,7 @@ export default function Advancedpage() {
             </Row>
             <label htmlFor="target">TargetCap:</label>
             <input type="number" min="0" max="5" step="0.01" name="target"
-        placeholder="(Select a number)" style={{marginLeft:"10px", width:"180px"}} value={targetCAP} required 
+        placeholder="(Select a number)" style={{marginLeft:"10px", width:"240px"}} value={targetCAP} required 
                 onChange={e => {
                     setTargetvalue(e.target.value )
                     _showResult(false)
@@ -191,7 +175,7 @@ export default function Advancedpage() {
                 <p></p>
         <label htmlFor="allnummc">Total Expected Number of MCs:</label>
         <input type="number" min="0" max="300" step="1" name="allnummc"
-        placeholder="(Select a number)" style={{marginLeft:"10px", width:"180px"}} value={expectedallmc} required 
+        placeholder="(Select a number, default: 160)" style={{marginLeft:"10px", width:"240px"}} value={expectedallmc} required 
                 onChange={e => {
                     setexpectedallmc(e.target.value )
                     _showResult(false)
@@ -203,6 +187,28 @@ export default function Advancedpage() {
 
 
             <br></br>
+
+            <h1 className="text-center">Results:</h1>
+
+                <div>
+                    {
+                    (<div className="text-center">
+                        {resultVisibility ? <><h4>To achieve your target CAP, the minimum<br></br> 
+                                            grade point to obtain for each remaining<br></br>
+                                            graded module is <br></br></h4>
+                                            <h1> {resultcap}</h1>
+                                            <ResultTable allhonour={allresultcap} />
+                                            <h4><RandomQuote /></h4></>
+
+
+                                            : <h2>Waiting for inputs...</h2>}
+                         </div>)
+                    }
+                </div>
+
+                <div id="ele" style={{paddingTop:"300px"}}>
+                    <p></p>
+                </div>
         
 
         </Container>
