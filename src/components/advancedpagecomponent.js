@@ -8,6 +8,7 @@ import Tablesem from './tablecomponent';
 import ResultTable from './resulttable';
 
 import { calculateAdvancedResult } from '../utils/Math'
+import { computeError } from '../utils/Errorvalidate'
 
 export default function Advancedpage() {
 
@@ -73,20 +74,27 @@ export default function Advancedpage() {
     }
 
     const onSubmitAll = (e) => {
-        e.preventDefault()
-        const result = calculateAdvancedResult(modArr, numberMC, gradePoint, targetCAP, expectedallmc)
-        // if result is null, then it is not possible to achieve target cap
-        setresultcap(result)
+        e.preventDefault();
+        const isError =  computeError(modArr, numberMC, gradePoint, targetCAP, expectedallmc);
+        if (isError != "") {
+            alert(isError)
+        } else {
+            const result = calculateAdvancedResult(modArr, numberMC, gradePoint, targetCAP, expectedallmc)
+            // if result is null, then it is not possible to achieve target cap
+            console.log(result)
+            setresultcap(result)
 
-        const allgradeArray = Array(5).fill("");
-        allgradeArray.map((element, index, array) => {
-            array[index] = calculateAdvancedResult(modArr, numberMC, gradePoint, (9-index)*0.5, expectedallmc)
+            const allgradeArray = Array(5).fill("");
+            allgradeArray.map((element, index, array) => {
+                array[index] = calculateAdvancedResult(modArr, numberMC, gradePoint, (9-index)*0.5, expectedallmc)
+            }
+            );
+            setallresultcap(allgradeArray)
+
+            _showResult(true)
+            scrolldiv();
         }
-        );
-        setallresultcap(allgradeArray)
-
-        _showResult(true)
-        scrolldiv();
+        
       }
 
 
