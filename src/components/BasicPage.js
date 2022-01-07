@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { calculateSimpleResult } from '../logic/Math'
+
 
 export default function BasicPage() {
 
@@ -10,16 +12,30 @@ export default function BasicPage() {
     targetCAP: "",
   })
 
+  const [resultVisibility, setResultVisibility] = useState(false)
+
+  const _showResult = (bool) => {
+    setResultVisibility(bool)
+  }
+
   const { numberMC, expectedMC, currentCAP, targetCAP } = inputs
 
   const _onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
+    _showResult(false)
+  }
+
+  function _isEmpty(str) {
+    return (!str || str.length === 0);
   }
 
   const _onSubmitForm = (e) => {
     e.preventDefault()
     const body = { numberMC, expectedMC, currentCAP, targetCAP }
-    console.log(body)
+    const result = calculateSimpleResult(body)
+    // if result is null, then it is not possible to achieve target cap
+    console.log(result)
+    _showResult(true)
   }
 
   return (
@@ -49,6 +65,7 @@ export default function BasicPage() {
           <button type="submit" className="btn btn-primary m-4">Submit</button>
         </div>
       </form>
+      {resultVisibility && Object.values(inputs).every((str) => _isEmpty(str) === false) && (<div> insert result </div>)}
     </div>
   )
 }
