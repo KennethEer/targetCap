@@ -8,29 +8,35 @@ import Tablesem from './tablecomponent';
 
 import { calculateAdvancedResult } from '../utils/Math'
 
-
 export default function Advancedpage() {
 
-    const gradeToNum = new Map();
+    const [modArr, setModuleArray] = useLocalStorage('modArr', Array(56).fill(""))
+      const [numberMC, setMcArray] = useLocalStorage('numberMC', Array(56).fill(0.0))
+      const [gradePoint, setgpArray] = useLocalStorage('gradePoint',Array(56).fill(""))
+      const [targetCAP, setTargetvalue] = useLocalStorage('targetCAP', 0.0)
 
-    gradeToNum.set("A", 5)
-    gradeToNum.set("A-", 4.5)
-    gradeToNum.set("B+", 4)
-    gradeToNum.set("B", 3.5)
-    gradeToNum.set("B-", 3)
-    gradeToNum.set("C+", 2.5)
-    gradeToNum.set("C", 2)
-    gradeToNum.set("S", -1)
-    gradeToNum.set("D+", 1.5)
-    gradeToNum.set("D", 1)
-    gradeToNum.set("F", 0)
-
-    const [inputs, setInputs] = useState({
-        modArr: Array(56).fill(""),
-        numberMC: Array(56).fill(0.0),          //7 per sem
-        gradePoint:Array(56).fill(0.0),
-        targetCAP: 0.0,
-      })
+      function useLocalStorage(key, initialValue) {
+        const [storedValue, setStoredValue] = useState(() => {
+          try {
+            const item = window.localStorage.getItem(key);
+            return item ? JSON.parse(item) : initialValue;
+          } catch (error) {
+            console.log(error);
+            return initialValue;
+          }
+        });
+        const setValue = (value) => {
+          try {
+            const valueToStore =
+              value instanceof Function ? value(storedValue) : value;
+            setStoredValue(valueToStore);
+            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        return [storedValue, setValue];
+      }
 
       const [resultVisibility, setResultVisibility] = useState(false)
       const [resultcap, setresultcap] = useState(0);
@@ -39,30 +45,24 @@ export default function Advancedpage() {
         setResultVisibility(bool)
       }
 
-    const { modArr, numberMC, gradePoint, targetCAP } = inputs
-
-    const onSave = (name, value, rownum) => {
-        var arr;
+      const OnSave = (name, value, rownum) => {
         if (name == "mod") {
-            arr = modArr;
+            const arr = modArr.slice(0);
             arr[rownum] = value;
-            setInputs({ ...inputs, [modArr]: arr })
+            setModuleArray(arr); 
         }
         if (name == "numberofMC") {
-            arr = numberMC;
+            const arr = numberMC.slice(0);
             arr[rownum] = value;
-            setInputs({ ...inputs, [numberMC]: arr })
+            setMcArray(arr)
         }
         if (name == "grade") {
-            arr = gradePoint;
-            var convertedVal = gradeToNum.get(value); 
-            arr[rownum] = convertedVal;
-            setInputs({ ...inputs, [gradePoint]: arr })
+            const arr = gradePoint.slice(0);
+            arr[rownum] = value;
+            setgpArray(arr);
         }        
         _showResult(false)
     }
-
-    //const myRef = useRef(null)
 
     const scrolldiv = () => {
         var elem = document.getElementById("ele");
@@ -84,56 +84,72 @@ export default function Advancedpage() {
             <Row>
                 <Col>
                 <h5>Year 1 Sem 1</h5>
-                <Tablesem mc={numberMC} start={0} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={0} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>    
                 <Col>
                 <h5>Year 1 Sem 2</h5>
-                <Tablesem mc={numberMC} start={7} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={7} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
             </Row>
             <Row>
                 <Col>
                 <h5>Year 2 Sem 1</h5>
-                <Tablesem mc={numberMC} start={14} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={14} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
                 <Col>
                 <h5>Year 2 Sem 2</h5>
-                <Tablesem mc={numberMC} start={21} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={21} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
             </Row>
             <Row>
                 <Col>
                 <h5>Year 3 Sem 1</h5>
-                <Tablesem mc={numberMC} start={28} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={28} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
                 <Col>
                 <h5>Year 3 Sem 2</h5>
-                <Tablesem mc={numberMC} start={35} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={35} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
             </Row>
             <Row>
                 <Col>
                 <h5>Year 4 Sem 1</h5>
-                <Tablesem mc={numberMC} start={42} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={42} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
                 <Col>
                 <h5>Year 4 Sem 2</h5>
-                <Tablesem mc={numberMC} start={49} onChange={(val,val2,val3) => {
-                    onSave(val,val2,val3)
+                <Tablesem 
+                    ArrayofMod={modArr} 
+                    ArrayofMc={numberMC} Arrayofgp={gradePoint} start={49} onChange={(val,val2,val3) => {
+                        OnSave(val,val2,val3)
                 }}/></Col>  
             </Row>
-            <label for="target">TargetCap:</label>
+            <label htmlFor="target">TargetCap:</label>
             <input type="number" min="0" max="5" step="0.01" name="target"
         placeholder="(Select a number)" style={{marginLeft:"10px", width:"180px"}} value={targetCAP} required 
                 onChange={e => {
-                    setInputs({ ...inputs, targetCAP: e.target.value })
+                    setTargetvalue(e.target.value )
                     _showResult(false)
                 }}
         />
@@ -147,13 +163,11 @@ export default function Advancedpage() {
             <div>
                 {
                 (<div className="text-center">
-                    {resultVisibility ? <h4>To achieve your target CAP, the grade<br></br> 
-                                        point to obtain for each remaining<br></br>
-                                        graded module is <br></br>
+                    {resultVisibility ? <><h4>To achieve your target CAP, the minimum<br></br> 
+                                            grade point to obtain for each remaining<br></br>
+                                            graded module is <br></br></h4>
                                         <h1> {resultcap}</h1>
-                                        <RandomQuote />
-                                        </h4> 
-
+                                        <h4><RandomQuote /></h4></>
                                         : <h2>Waiting for inputs...</h2>}
                      </div>)
                 }
