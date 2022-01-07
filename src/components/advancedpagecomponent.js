@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Tablesem from './tablecomponent';
+import ResultTable from './resulttable';
 
 import { calculateAdvancedResult } from '../utils/Math'
 
@@ -14,6 +15,7 @@ export default function Advancedpage() {
       const [numberMC, setMcArray] = useLocalStorage('numberMC', Array(56).fill(0.0))
       const [gradePoint, setgpArray] = useLocalStorage('gradePoint',Array(56).fill(""))
       const [targetCAP, setTargetvalue] = useLocalStorage('targetCAP', 0.0)
+      const [expectedallmc, setexpectedallmc] = useLocalStorage('TotalMC', 160)
 
       function useLocalStorage(key, initialValue) {
         const [storedValue, setStoredValue] = useState(() => {
@@ -40,6 +42,7 @@ export default function Advancedpage() {
 
       const [resultVisibility, setResultVisibility] = useState(false)
       const [resultcap, setresultcap] = useState(0);
+      const [allresultcap, setallresultcap] = useState(Array(5).fill(""));
 
       const _showResult = (bool) => {
         setResultVisibility(bool)
@@ -71,16 +74,49 @@ export default function Advancedpage() {
 
     const onSubmitAll = (e) => {
         e.preventDefault()
-        const result = calculateAdvancedResult(modArr, numberMC, gradePoint, targetCAP)
+        const result = calculateAdvancedResult(modArr, numberMC, gradePoint, targetCAP, expectedallmc)
         // if result is null, then it is not possible to achieve target cap
         setresultcap(result)
+
+        const allgradeArray = Array(5).fill("");
+        allgradeArray.map((element, index, array) => {
+            array[index] = calculateAdvancedResult(modArr, numberMC, gradePoint, (9-index)*0.5, expectedallmc)
+        }
+        );
+        setallresultcap(allgradeArray)
+
         _showResult(true)
         scrolldiv();
       }
 
+
       return (
         <div>
         <Container>
+            <h1>
+                Input the following fields and we will compute a detailed feedback to achieve your target CAP
+            </h1>
+            <h6>
+                *All inputs automatically saved:)*
+            </h6>
+            <br></br>
+
+            <div id="ele">
+                    {
+                    (<div className="text-center">
+                        {resultVisibility ? <>
+                            <h1 className="text-center">Results:</h1>
+                        <h4>To achieve your target CAP, the minimum<br></br> 
+                                            grade point to obtain for each remaining<br></br>
+                                            graded module is <br></br></h4>
+                                            <h1> {resultcap}</h1>
+                                            <ResultTable allhonour={allresultcap} />
+                                            <h4><RandomQuote /></h4></>
+                                            : <p></p>}
+                         </div>)
+                    }
+                </div>
+
             <Row>
                 <Col>
                 <h5>Year 1 Sem 1</h5>
@@ -151,36 +187,23 @@ export default function Advancedpage() {
                 onChange={e => {
                     setTargetvalue(e.target.value )
                     _showResult(false)
-                }}
-        />
+                }} />
+                <p></p>
+        <label htmlFor="allnummc">Total Expected Number of MCs:</label>
+        <input type="number" min="0" max="300" step="1" name="allnummc"
+        placeholder="(Select a number)" style={{marginLeft:"10px", width:"180px"}} value={expectedallmc} required 
+                onChange={e => {
+                    setexpectedallmc(e.target.value )
+                    _showResult(false)
+                }} />
 
             <div className='d-flex flex-row-reverse'>
             <button type="submit" className="btn btn-primary m-4" onClick={onSubmitAll}>Submit</button>
             </div>
 
-            <h1 className="text-center">Results:</h1>
 
-            <div>
-                {
-                (<div className="text-center">
-                    {resultVisibility ? <><h4>To achieve your target CAP, the minimum<br></br> 
-                                            grade point to obtain for each remaining<br></br>
-                                            graded module is <br></br></h4>
-                                        <h1> {resultcap}</h1>
-                                        <h4><RandomQuote /></h4></>
-                                        : <h2>Waiting for inputs...</h2>}
-                     </div>)
-                }
-            </div>
             <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <div id="ele">
-                <p></p>
-            </div>
+        
 
         </Container>
     </div>

@@ -16,7 +16,7 @@ export default function Tablerow(props) {
                 </td>
                 <td>
                 <select name="grade" id="grade" value={props.specificgp} style={{height: "30px"}} onChange={e => props.onChange(e.target.name, e.target.value)}>
-                    <option value="" disabled hidden>Select a grade</option>
+                    <option value="">Select a grade</option>
                     <option value="A">A/A+</option>
                     <option value="A-">A-</option>
                     <option value="B+">B+</option>

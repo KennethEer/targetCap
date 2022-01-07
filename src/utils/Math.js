@@ -10,7 +10,7 @@ export function calculateQuickResult(inputs) {
   }
 }
 
-export function calculateAdvancedResult(firstinput, secondinput, thirdinput, fourthinput) {
+export function calculateAdvancedResult(firstinput, secondinput, thirdinput, fourthinput, fifthinput) {
   const gradeToNum = new Map();
     gradeToNum.set("A", 5)
     gradeToNum.set("A-", 4.5)
@@ -29,6 +29,11 @@ export function calculateAdvancedResult(firstinput, secondinput, thirdinput, fou
   var numberMC = secondinput.slice();
   var gradePoint = thirdinput.slice();
   var targetCAP = fourthinput;
+  var totalExpMC = fifthinput;
+
+  if (totalExpMC == "") {
+    totalExpMC = 160;
+  }
 
   numberMC.forEach((element,index, mcarray) => {
     if (element == "") {
@@ -56,12 +61,12 @@ export function calculateAdvancedResult(firstinput, secondinput, thirdinput, fou
 
   var addupAllGradedMC = numberMC.reduce(reducer);
   var numOfUngradedMC = addupAllMC - addupAllGradedMC;
-  var gradedandremainingMC = 160 - numOfUngradedMC;
+  var gradedandremainingMC = totalExpMC - numOfUngradedMC;
 
-  var output = (targetCAP * gradedandremainingMC - addupAllGrade) / (160-addupAllMC);
+  var output = (targetCAP * gradedandremainingMC - addupAllGrade) / (totalExpMC-addupAllMC);
   output = output.toFixed(2)
   if (output > 5.0) {
-    return null
+    return "out of bound"
   } else if (output < 0) {
     return 0
   } else {
