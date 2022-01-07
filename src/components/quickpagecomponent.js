@@ -16,6 +16,8 @@ export default function QuickPage() {
 
   const [resultVisibility, setResultVisibility] = useState(false)
 
+  const [result, setResult] = useState("")
+
   const _showResult = (bool) => {
     setResultVisibility(bool)
   }
@@ -25,6 +27,7 @@ export default function QuickPage() {
   const _onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
     _showResult(false)
+    setResult("")
   }
 
   function _isEmpty(str) {
@@ -37,6 +40,7 @@ export default function QuickPage() {
     const result = calculateQuickResult(body)
     // if result is null, then it is not possible to achieve target cap
     console.log(result)
+    setResult(result.toFixed(2).toString())
     _showResult(true)
   }
 
@@ -72,7 +76,7 @@ export default function QuickPage() {
           </div>
         </Form>
         {resultVisibility && Object.values(inputs).every((str) => _isEmpty(str) === false) && (
-          <p className='my-5'>put results here</p>
+          <p className='my-5'>result is {result}</p>
         )}
         <RandomQuote />
       </Container>
